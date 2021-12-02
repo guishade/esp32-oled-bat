@@ -100,7 +100,8 @@ void loop()
       send_osc();
       display.clear();
       display.drawString(0, 0, WiFi.localIP().toString());
-      display.drawString(0, 8, rpy);
+      display.drawString(0, 8, String(host)+">"+String(publish_port));
+      display.drawString(0, 16, rpy);
       display.display();
       prev_ms = millis();
     }
