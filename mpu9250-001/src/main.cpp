@@ -11,12 +11,13 @@ const char *pwd = "worktest";
 const char *host = "192.168.0.140"; // destino
 const int publish_port = 1234;
 
-#define I2C_SDA 5//22
-#define I2C_SCL 4//21
+#define I2C_SDA 5 // 22
+#define I2C_SCL 4 // 21
 
 MPU9250 mpu;
-SSD1306Wire display(0x3c, I2C_SDA, I2C_SCL); 
+SSD1306Wire display(0x3c, I2C_SDA, I2C_SCL);
 String rpy;
+const String ip;
 float roll, pitch, yaw;
 
 void print_roll_pitch_yaw()
@@ -43,9 +44,15 @@ void setup()
 {
   Serial.begin(115200);
   Serial.println();
-  Serial.println();
 
   Wire.begin(I2C_SDA, I2C_SCL);
+
+  display.init();
+  display.setFont(ArialMT_Plain_10);
+  display.setTextAlignment(TEXT_ALIGN_LEFT);
+  display.clear();
+  display.drawString(0, 0, "ON");
+  display.display();
 
   WiFi.disconnect(true, true);
   delay(1000);
@@ -55,11 +62,13 @@ void setup()
   while (WiFi.status() != WL_CONNECTED)
   {
     Serial.print(".");
+    display.clear();
+    display.drawString(0, 0, "connecting to test001");
+    display.display();
     delay(500);
   }
   Serial.print("WiFi connected, IP = ");
   Serial.println(WiFi.localIP());
-
   OscWiFi.publish(host, publish_port, "/v", rpy)
       ->setFrameRate(60.f);
 
@@ -68,14 +77,12 @@ void setup()
     while (1)
     {
       Serial.println("MPU connection failed. Please check your connection with `connection_check` example.");
-      delay(5000);
+        display.clear();
+        display.drawString(0, 0, "no mpu");
+        display.display();
+        delay(5000);
     }
   }
-
-  display.init();
-  //display.flipScreenVertically();
-  display.setFont(ArialMT_Plain_10);
-  display.setTextAlignment(TEXT_ALIGN_LEFT);
 }
 
 long timeSinceLastModeSwitch = 0;
@@ -92,8 +99,8 @@ void loop()
       OscWiFi.update();
       send_osc();
       display.clear();
-      display.drawString(0, 0, rpy);
-      display.drawString(0, 0, rpy);
+      display.drawString(0, 0, host);
+      display.drawString(0, 8, rpy);
       display.display();
       prev_ms = millis();
     }
