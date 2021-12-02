@@ -99,7 +99,7 @@ void loop()
       OscWiFi.update();
       send_osc();
       display.clear();
-      display.drawString(0, 0, ip);
+      display.drawString(0, 0, WiFi.localIP().toString());
       display.drawString(0, 8, rpy);
       display.display();
       prev_ms = millis();
