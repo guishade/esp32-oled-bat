@@ -20,6 +20,8 @@ String rpy;
 const String ip;
 float roll, pitch, yaw;
 
+
+
 void print_roll_pitch_yaw()
 {
   Serial.print("Yaw, Pitch, Roll, Temp: ");
@@ -85,8 +87,6 @@ void setup()
   }
 }
 
-long timeSinceLastModeSwitch = 0;
-
 void loop()
 {
 
@@ -99,7 +99,7 @@ void loop()
       OscWiFi.update();
       send_osc();
       display.clear();
-      display.drawString(0, 0, host);
+      display.drawString(0, 0, ip);
       display.drawString(0, 8, rpy);
       display.display();
       prev_ms = millis();
