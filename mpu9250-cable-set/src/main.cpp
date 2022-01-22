@@ -63,7 +63,7 @@ void setup() {
     mpu.setGyroBias(1., 2., 3.);
     mpu.setMagBias(1., 2., 3.);
     mpu.setMagScale(1., 2., 3.);
-    mpu.setMagneticDeclination(1., 2., 3.);
+    mpu.setMagneticDeclination(1.);
     
     print_calibration();
     mpu.verbose(false);
