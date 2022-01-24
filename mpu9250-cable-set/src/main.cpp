@@ -6,7 +6,8 @@
 
 MPU9250 mpu;
 
-void print_roll_pitch_yaw() {
+void print_roll_pitch_yaw()
+{
     Serial.print("Yaw, Pitch, Roll: ");
     Serial.print(mpu.getYaw(), 2);
     Serial.print(", ");
@@ -15,7 +16,8 @@ void print_roll_pitch_yaw() {
     Serial.println(mpu.getRoll(), 2);
 }
 
-void print_calibration() {
+void print_calibration()
+{
     Serial.println("< calibration parameters >");
     Serial.println("accel bias [g]: ");
     Serial.print(mpu.getAccBiasX() * 1000.f / (float)MPU9250::CALIB_ACCEL_SENSITIVITY);
@@ -47,32 +49,64 @@ void print_calibration() {
     Serial.println();
 }
 
-void setup() {
+void setup()
+{
     Serial.begin(115200);
     Wire.begin(I2C_SDA, I2C_SCL);
+    pinMode(0, INPUT_PULLUP);
+    pinMode(2, INPUT_PULLUP);
     delay(2000);
 
-    if (!mpu.setup(0x68)) {  // change to your own address
-        while (1) {
+    if (!mpu.setup(0x68))
+    {
+        while (1)
+        {
             Serial.println("MPU connection failed. Please check your connection with `connection_check` example.");
             delay(5000);
         }
     }
-    
-    mpu.setAccBias(1., 2., 3.);
-    mpu.setGyroBias(1., 2., 3.);
-    mpu.setMagBias(1., 2., 3.);
-    mpu.setMagScale(1., 2., 3.);
-    mpu.setMagneticDeclination(1.);
-    
+
+    /*     mpu.setAccBias(0., 0., 0.);
+        mpu.setGyroBias(0., 0., 0.);
+        mpu.setMagBias(0., 0., 0.);
+        mpu.setMagScale(0., 0., 0.);
+        mpu.setMagneticDeclination(0.); */
+
+    mpu.setAccBias(-253.92, -246.64, -187.51);
+    mpu.setGyroBias(-1.13, 1.48, -2.81);
+    mpu.setMagBias(105.40, 333.36, -266.90);
+    mpu.setMagScale(2.24, 0.71, 0.88);
+    mpu.setMagneticDeclination(-3.13);
+
     print_calibration();
     mpu.verbose(false);
 }
 
-void loop() {
-    if (mpu.update()) {
+void loop()
+{
+
+    if (mpu.update())
+    {
         static uint32_t prev_ms = millis();
-        if (millis() > prev_ms + 25) {
+        if (millis() > prev_ms + 25)
+        {
+            if (digitalRead(0))
+            {
+                Serial.print("1on");
+            }
+            else
+            {
+                Serial.print("1off");
+            }
+
+            if (digitalRead(2))
+            {
+                Serial.print("2on");
+            }
+            else
+            {
+                Serial.print("2off");
+            }
             print_roll_pitch_yaw();
             prev_ms = millis();
         }
