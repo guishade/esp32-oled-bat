@@ -6,14 +6,13 @@
 
 MPU9250 mpu;
 
+String a = "0";
+String b = "0";
+
+
 void print_roll_pitch_yaw()
 {
-    Serial.print("Yaw, Pitch, Roll: ");
-    Serial.print(mpu.getYaw(), 2);
-    Serial.print(", ");
-    Serial.print(mpu.getPitch(), 2);
-    Serial.print(", ");
-    Serial.println(mpu.getRoll(), 2);
+    Serial.println(a  + "," + b  + "," + "r" + String(mpu.getRoll()) + "," + "p" + String(mpu.getPitch()) + "," + "y" + String(mpu.getYaw()));
 }
 
 void print_calibration()
@@ -92,20 +91,20 @@ void loop()
         {
             if (digitalRead(0))
             {
-                Serial.print("1on");
+                a = "0";
             }
             else
             {
-                Serial.print("1off");
+                a = "1";
             }
 
             if (digitalRead(2))
             {
-                Serial.print("2on");
+                b = "0";
             }
             else
             {
-                Serial.print("2off");
+                b = "1";
             }
             print_roll_pitch_yaw();
             prev_ms = millis();
