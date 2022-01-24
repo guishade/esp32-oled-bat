@@ -9,10 +9,9 @@ MPU9250 mpu;
 String a = "0";
 String b = "0";
 
-
 void print_roll_pitch_yaw()
 {
-    Serial.println(a  + "," + b  + "," + "r" + String(mpu.getRoll()) + "," + "p" + String(mpu.getPitch()) + "," + "y" + String(mpu.getYaw()));
+    Serial.println(a + "," + b + "," + "r" + String(mpu.getRoll()) + "," + "p" + String(mpu.getPitch()) + "," + "y" + String(mpu.getYaw()));
 }
 
 void print_calibration()
@@ -64,12 +63,6 @@ void setup()
             delay(5000);
         }
     }
-
-    /*     mpu.setAccBias(0., 0., 0.);
-        mpu.setGyroBias(0., 0., 0.);
-        mpu.setMagBias(0., 0., 0.);
-        mpu.setMagScale(0., 0., 0.);
-        mpu.setMagneticDeclination(0.); */
 
     mpu.setAccBias(-253.92, -246.64, -187.51);
     mpu.setGyroBias(-1.13, 1.48, -2.81);
